@@ -1,13 +1,5 @@
 import {
-  Button,
   CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import type { Employee } from "../models/employee.model";
@@ -52,88 +44,74 @@ const EmployeeGrid = () => {
     await DeleteEmployee(employeeId);
   };
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) return <div className="flex justify-center mt-10"><CircularProgress /></div>;
 
-  if (isError) return <p>Error: {error.message}</p>;
+  if (isError) return <p className="text-red-600 text-center mt-4">Error: {error.message}</p>;
 
   return (
-    <>
-      <Button variant="outlined" onClick={onCreate}>
-        Create
-      </Button>
-      <TableContainer component={Paper}>
-        <Table >
-          <TableHead >
-            <TableRow >
-              <TableCell >
-                <strong>Id</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Name</strong>
-              </TableCell>
-              <TableCell>
-                <strong>email</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Website</strong>
-              </TableCell>
-              <TableCell>
-                <strong>View</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Update</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Delete</strong>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data &&
-              data.map((employee: Employee, index: number) => {
-                return (
-                  <TableRow key={index}>
-                    <TableCell>{employee.id}</TableCell>
-                    <TableCell>{employee.name}</TableCell>
-                    <TableCell>{employee.email}</TableCell>
-                    <TableCell>{employee.website}</TableCell>
-                    <TableCell>
-                      <Button className="bg-red-500 text-black font-light"
-                        type="button"
-                        variant="outlined"
-                        onClick={() => viewEmployee(employee)}
-                      >
-                        View
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button className="bg-green-500 text-black font-light"
-                        type="button"
-                        variant="outlined"
-                        onClick={() => updateEmployee(employee)}
-                      >
-                        Update
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button className="bg-blue-500 text-black font-light"
-                        type="button"
-                        variant="outlined"
-                        onClick={() => deleteEmployee(employee.id)}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-gray-700">Employee List</h2>
+        <button
+          onClick={onCreate}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
+        >
+          + Create
+        </button>
+      </div>
+
+      <div className="overflow-x-auto shadow-md rounded-lg">
+        <table className="min-w-full bg-white border border-gray-200">
+          <thead className="bg-gray-100">
+            <tr>
+              {["Id", "Name", "Email", "Website", "View", "Update", "Delete"].map((col) => (
+                <th key={col} className="px-4 py-2 text-left text-gray-700 font-semibold border-b border-gray-200">
+                  {col}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((employee, index) => (
+              <tr
+                key={index}
+                className="hover:bg-gray-50 transition-colors duration-200"
+              >
+                <td className="px-4 py-2 border-b">{employee.id}</td>
+                <td className="px-4 py-2 border-b">{employee.name}</td>
+                <td className="px-4 py-2 border-b">{employee.email}</td>
+                <td className="px-4 py-2 border-b">{employee.website}</td>
+                <td className="px-4 py-2 border-b">
+                  <button
+                    onClick={() => viewEmployee(employee)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                  >
+                    View
+                  </button>
+                </td>
+                <td className="px-4 py-2 border-b">
+                  <button
+                    onClick={() => updateEmployee(employee)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                  >
+                    Update
+                  </button>
+                </td>
+                <td className="px-4 py-2 border-b">
+                  <button
+                    onClick={() => deleteEmployee(employee.id)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
 export default EmployeeGrid;
-
-

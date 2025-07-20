@@ -1,5 +1,4 @@
 
-import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import EmployeeGrid from "./CrudOPeration/EmployeeGrid";
 import CreateUpdateEmployee from "./CrudOPeration/createUpdateEmployee";
